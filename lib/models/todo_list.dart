@@ -51,3 +51,11 @@ class TodoList extends StateNotifier<List<Todo>> {
     state = state.where((todo) => todo.id != target.id).toList();
   }
 }
+
+final todoListProvider = StateNotifierProvider<TodoList, List<Todo>>(
+  (ref) => TodoList([
+    Todo(id: 'todo-0', description: 'hi', completed: true),
+    Todo(id: 'todo-1', description: 'hello'),
+    Todo(id: 'todo-2', description: 'bonjour'),
+  ]
+));
