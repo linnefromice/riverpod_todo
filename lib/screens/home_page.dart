@@ -14,6 +14,7 @@ final filteredTodos = Provider<List<Todo>>((ref) {
   final todos = ref.watch(todoListProvider);
   return todos;
 });
+final currentTodo = ScopedProvider<Todo>(null);
 
 class HomePage extends HookWidget {
   HomePage({Key? key}) : super(key: key);
