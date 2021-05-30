@@ -37,36 +37,45 @@ class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final todos = useProvider(filteredTodos);
+    final newTodoController = useTextEditingController();
 
-    return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        children: [
-          c.Title(),
-          TextField(
-            controller: null,
-            decoration: const InputDecoration(
-              labelText: 'What needs to be done?',
-            ),
-            onSubmitted: null
-          ),
-          const SizedBox(height: 42),
-          const Toolbar(),
-          const Divider(height: 0),
-          for (var i = 0; i < todos.length; i++) ...[
-            if (i > 0) const Divider(height: 0),
-            Dismissible(
-              key: ValueKey(todos[i].id),
-              onDismissed: null,
-              child: ProviderScope(
-                overrides: [
-                  currentTodo.overrideWithValue(todos[i]),
-                ],
-                child: const TodoItem(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          children: [
+            c.Title(),
+            TextField(
+              controller: null,
+              decoration: const InputDecoration(
+                labelText: 'What needs to be done?',
               ),
-            )
+              onSubmitted: (value) {
+                context.read(todoListProvider.notifier).add(value);
+                newTodoController.clear();
+              },
+            ),
+            const SizedBox(height: 42),
+            const Toolbar(),
+            const Divider(height: 0),
+            for (var i = 0; i < todos.length; i++) ...[
+              if (i > 0) const Divider(height: 0),
+              Dismissible(
+                key: ValueKey(todos[i].id),
+                onDismissed: (_) {
+                  context.read(todoListProvider.notifier).remove(todos[i]);
+                },
+                child: ProviderScope(
+                  overrides: [
+                    currentTodo.overrideWithValue(todos[i]),
+                  ],
+                  child: const TodoItem(),
+                ),
+              )
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
