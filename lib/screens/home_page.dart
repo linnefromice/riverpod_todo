@@ -10,9 +10,24 @@ import 'components/toolbar.dart';
 final uncompletedTodosCount = Provider<int>((ref) {
   return ref.watch(todoListProvider).where((todo) => !todo.completed).length;
 });
+enum TodoListFilter {
+  all,
+  active,
+  completed,
+}
+final todoListFilter = StateProvider((_) => TodoListFilter.all);
 final filteredTodos = Provider<List<Todo>>((ref) {
+  final filter = ref.watch(todoListFilter);
   final todos = ref.watch(todoListProvider);
-  return todos;
+  switch (filter.state) {
+    case TodoListFilter.completed:
+      return todos.where((todo) => todo.completed).toList();
+    case TodoListFilter.active:
+      return todos.where((todo) => !todo.completed).toList();
+    case TodoListFilter.all:
+    default:
+      return todos;
+  }
 });
 final currentTodo = ScopedProvider<Todo>(null);
 
