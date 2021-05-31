@@ -5,7 +5,7 @@ import 'package:riverpod_todo/screens/components/toolbar.dart';
 import 'package:riverpod_todo/screens/home_page.dart';
 
 void main() {
-  testWidgets('', (tester) async {
+  testWidgets('have Title,TextField,Toolbar', (tester) async {
     await tester.pumpWidget(MaterialApp(
       home: HomePage()
     ));
