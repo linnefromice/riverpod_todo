@@ -31,6 +31,8 @@ final filteredTodos = Provider<List<Todo>>((ref) {
 });
 final currentTodo = ScopedProvider<Todo>(null);
 
+final addTodoKey = UniqueKey();
+
 class HomePage extends HookWidget {
   HomePage({Key? key}) : super(key: key);
 
@@ -47,7 +49,8 @@ class HomePage extends HookWidget {
           children: [
             c.Title(),
             TextField(
-              controller: null,
+              key: addTodoKey,
+              controller: newTodoController,
               decoration: const InputDecoration(
                 labelText: 'What needs to be done?',
               ),

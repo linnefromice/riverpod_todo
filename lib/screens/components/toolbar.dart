@@ -3,6 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../home_page.dart';
 
+final allFilterKey = UniqueKey();
+final activeFilterKey = UniqueKey();
+final completedFilterKey = UniqueKey();
+
 class Toolbar extends HookWidget {
   const Toolbar({
     Key? key,
@@ -28,6 +32,7 @@ class Toolbar extends HookWidget {
             ),
           ),
           Tooltip(
+            key: allFilterKey,
             message: 'All todos',
             child: TextButton(
               onPressed: () => filter.state = TodoListFilter.all,
@@ -38,6 +43,7 @@ class Toolbar extends HookWidget {
             ),
           ),
           Tooltip(
+            key: activeFilterKey,
             message: 'Only uncompleted todos',
             child: TextButton(
               onPressed: () => filter.state = TodoListFilter.active,
@@ -48,6 +54,7 @@ class Toolbar extends HookWidget {
             ),
           ),
           Tooltip(
+            key: completedFilterKey,
             message: 'Only completed todos',
             child: TextButton(
               onPressed: () => filter.state = TodoListFilter.completed,
