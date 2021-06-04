@@ -6,14 +6,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_todo/screens/home_page.dart';
 
 void main() {
+  var uncompleted = Todo(
+    id: 'todo_uncompleted_id',
+    description: 'todo_uncompleted_description',
+    completed: false
+  );
+  var completed = Todo(
+    id: 'todo_completed_id',
+    description: 'todo_completed_description',
+    completed: true
+  );
   testWidgets('default display', (tester) async {
     await tester.pumpWidget(ProviderScope(
       overrides: [
-        currentTodo.overrideWithValue(Todo(
-          id: 'test_id',
-          description: 'test_description',
-          completed: true
-        ))
+        currentTodo.overrideWithValue(uncompleted)
       ],
       child: MaterialApp(
         home: TodoItem()
@@ -22,5 +28,49 @@ void main() {
     expect(find.byType(ListTile), findsOneWidget);
     expect(find.byType(Checkbox), findsOneWidget);
     expect(find.byType(Text), findsOneWidget);
+  });
+  testWidgets('when uncompleted todo', (tester) async {
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        currentTodo.overrideWithValue(uncompleted)
+      ],
+      child: MaterialApp(
+        home: TodoItem()
+      ),
+    ));
+    expect(
+      tester.widget(find.byType(Checkbox)),
+      isA<Checkbox>().having((s) => s.value, 'value', false)
+    );
+/*
+    await tester.tap(find.byType(Checkbox));
+    await tester.pump();
+    expect(
+      tester.widget(find.byType(Checkbox)),
+      isA<Checkbox>().having((s) => s.value, 'value', true)
+    );
+*/
+  });
+  testWidgets('when completed todo', (tester) async {
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        currentTodo.overrideWithValue(completed)
+      ],
+      child: MaterialApp(
+          home: TodoItem()
+      ),
+    ));
+    expect(
+      tester.widget(find.byType(Checkbox)),
+      isA<Checkbox>().having((s) => s.value, 'value', true)
+    );
+/*
+    await tester.tap(find.byType(Checkbox));
+    await tester.pump();
+    expect(
+      tester.widget(find.byType(Checkbox)),
+      isA<Checkbox>().having((s) => s.value, 'value', true)
+    );
+*/
   });
 }
