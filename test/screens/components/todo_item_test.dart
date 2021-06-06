@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_todo/models/todo.dart';
+import 'package:riverpod_todo/models/todo_list.dart';
 import 'package:riverpod_todo/screens/components/todo_item.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_todo/screens/home_page.dart';
@@ -38,18 +39,11 @@ void main() {
         home: TodoItem()
       ),
     ));
+    var checkbox = find.byType(Checkbox);
     expect(
-      tester.widget(find.byType(Checkbox)),
+      tester.widget(checkbox),
       isA<Checkbox>().having((s) => s.value, 'value', false)
     );
-/*
-    await tester.tap(find.byType(Checkbox));
-    await tester.pump();
-    expect(
-      tester.widget(find.byType(Checkbox)),
-      isA<Checkbox>().having((s) => s.value, 'value', true)
-    );
-*/
   });
   testWidgets('when completed todo', (tester) async {
     await tester.pumpWidget(ProviderScope(
@@ -64,13 +58,5 @@ void main() {
       tester.widget(find.byType(Checkbox)),
       isA<Checkbox>().having((s) => s.value, 'value', true)
     );
-/*
-    await tester.tap(find.byType(Checkbox));
-    await tester.pump();
-    expect(
-      tester.widget(find.byType(Checkbox)),
-      isA<Checkbox>().having((s) => s.value, 'value', true)
-    );
-*/
   });
 }

@@ -41,7 +41,7 @@ class TodoItem extends HookWidget {
           leading: Checkbox(
             value: todo.completed,
             onChanged: (value) =>
-                context.read(todoListProvider.notifier).toggle(todo.id),
+              context.read(todoListProvider.notifier).toggle(todo.id),
           ),
           title: isFocused
               ? TextField(
